@@ -38,7 +38,9 @@
   in
     pkgs.dockerTools.streamLayeredImage {
       name = "pglab-${name}";
-      contents = [nss];
+      # /bin/sh: initdb checks `postgres -V` through popen(), which runs
+      # /bin/sh -c, and the server needs it for archive_command and friends.
+      contents = [nss pkgs.dockerTools.binSh];
       extraCommands = ''
         mkdir -p -m 1777 tmp
         mkdir -p data
