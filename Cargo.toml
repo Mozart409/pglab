@@ -1,0 +1,38 @@
+[package]
+name = "pglab"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.96.1"
+license = "MIT"
+description = "Reproducible PostgreSQL benchmarks: versions, settings and extensions in Nix-built containers"
+repository = "https://github.com/Mozart409/pglab"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+hdrhistogram = { version = "7", default-features = false }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Runtime queries only (setup files, probes and snapshots come from the Nix
+# scenarios), so there are no query! macros and no .sqlx offline cache. No TLS:
+# the server under test is only ever on loopback.
+sqlx = { version = "0.9", default-features = false, features = [
+    "json",
+    "postgres",
+    "runtime-tokio",
+] }
+tokio = { version = "1", features = ["macros", "rt", "time"] }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+# Same tier as the other rust/ projects: `all` + `pedantic` + `nursery`, made
+# hard errors by `-D warnings` in `just pglab-clippy`. Negative priority lets
+# specific overrides below win.
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+nursery = { level = "warn", priority = -1 }
+
+[lints]
+workspace = true
