@@ -53,8 +53,9 @@ content, no data from the homelab databases.
 | Real run | `just pglab-run <name> --db-cpus 2-7 --client-cpus 8-11` |
 | Markdown tables from summaries | `just pglab-report` |
 
-Only the root lefthook runs, and it has no Rust jobs, so run `just pglab-ci`
-before committing.
+Only the root lefthook runs: rustfmt on staged `.rs` files at commit, and
+`just pglab-ci` at pre-push when the push touches `rust/pglab`. Run
+`just pglab-ci` before committing anyway.
 
 ## How a run works
 
