@@ -53,8 +53,10 @@ content, no data from the homelab databases.
 | Real run | `just pglab-run <name> --db-cpus 2-7 --client-cpus 8-11` |
 | Markdown tables from summaries | `just pglab-report` |
 
-Only the root lefthook runs: rustfmt on staged `.rs` files at commit, and
-`just pglab-ci` at pre-push when the push touches `rust/pglab`. Run
+Only the root lefthook runs: rustfmt on staged `.rs` files at commit, and at
+pre-push, when the push touches `rust/pglab`, the same checks as crane builds
+(`nix/checks.nix`, `nix build .#legacyPackages.x86_64-linux.rust-ci.pglab` from
+the root), which an unchanged source finds already in the store. Run
 `just pglab-ci` before committing anyway.
 
 ## How a run works
